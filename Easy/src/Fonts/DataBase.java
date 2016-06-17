@@ -8,12 +8,15 @@ import java.util.ArrayList;
  *
  * @author vinicius.reif
  */
-public class BancoDeDados implements Serializable
+public class DataBase implements Serializable
 {
     //Executar
     private ArrayList<Application> listApps = new ArrayList<>();
+    
+    //
+    
 
-    public BancoDeDados()
+    public DataBase()
     {
     }
 
@@ -47,5 +50,22 @@ public class BancoDeDados implements Serializable
             app.setId(id);
             id++;
         }
+    }
+    
+    public void removeApp(int id)
+    {
+        for(Application app : this.listApps)
+        {
+            if(app.getId() == id)
+            {
+                this.listApps.remove(app);
+                return;
+            }
+        }
+    }
+    
+    public int getProxIdAppList()
+    {
+        return this.listApps.size();
     }
 }

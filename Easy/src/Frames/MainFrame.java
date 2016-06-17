@@ -1,7 +1,10 @@
 package Frames;
 
-import Fonts.BancoDeDados;
+import Fonts.DataBase;
+import Fonts.Executar.Application;
+import Fonts.Update;
 import java.awt.Color;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -9,12 +12,15 @@ import java.awt.Color;
  */
 public class MainFrame extends javax.swing.JFrame {
 
-    private BancoDeDados bd;
+    private DataBase db;
+    private DefaultTableModel tableAppModel;
     
     /** Creates new form MainFrame */
-    public MainFrame(BancoDeDados bd) {
+    public MainFrame(DataBase bd) {
         initComponents();
         this.getContentPane().setBackground(Color.white);
+        this.tableAppModel = (DefaultTableModel)this.tbApp.getModel();
+        new Update(this, bd).start();
     }
 
     @SuppressWarnings("unchecked")
@@ -30,7 +36,7 @@ public class MainFrame extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbApp = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -76,7 +82,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 763, Short.MAX_VALUE)
+            .addGap(0, 847, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -92,20 +98,20 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Executar/right-arrow.png"))); // NOI18N
         jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbApp.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][]
             {
 
             },
             new String []
             {
-                "Nome", "Endereço"
+                "ID", "Nome", "Endereço"
             }
         )
         {
             boolean[] canEdit = new boolean []
             {
-                false, false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex)
@@ -113,7 +119,7 @@ public class MainFrame extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane4.setViewportView(jTable1);
+        jScrollPane4.setViewportView(tbApp);
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Executar/plus.png"))); // NOI18N
         jLabel4.setText(" Add Aplicação");
@@ -122,6 +128,13 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Executar/error.png"))); // NOI18N
         jLabel5.setText(" Remover Aplicação");
         jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel5.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                jLabel5MouseClicked(evt);
+            }
+        });
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Executar/history.png"))); // NOI18N
         jLabel6.setText("Histórico");
@@ -138,7 +151,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 743, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 827, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -176,7 +189,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Executar", jPanel3);
+        jTabbedPane1.addTab("Executar Aplicação", jPanel3);
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -760,7 +773,7 @@ public class MainFrame extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 852, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -785,6 +798,18 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /* Executar App */
+    public void updateTablesExecutar()
+    {
+        //tbApp
+        this.tableAppModel.setRowCount(0);
+        for(Application app : this.db.getListApps())
+        {
+            this.tableAppModel.addRow(new Object[]{app.getId(), app.getName(), app.getPath()});
+        }
+    }
+    
+    /* ConfigDomain*/
     private void btnDelCriarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDelCriarMouseEntered
         colocarMouseBtnAddDel(btnDelCriar);
     }//GEN-LAST:event_btnDelCriarMouseEntered
@@ -1231,6 +1256,21 @@ public class MainFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnPesquisarFocusLost
 
+    /**
+     * Remove
+     * @param evt 
+     */
+    private void jLabel5MouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jLabel5MouseClicked
+    {//GEN-HEADEREND:event_jLabel5MouseClicked
+        if(this.tbApp.getSelectedRow() == -1)
+        {
+            return;
+        }
+        this.db.removeApp((int)(this.tbApp.getValueAt(this.tbApp.getSelectedRow(), 0)));
+        this.db.updateIdsAppList();
+        this.updateTablesExecutar();
+    }//GEN-LAST:event_jLabel5MouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddAlterar;
     private javax.swing.JButton btnAddCriar;
@@ -1264,7 +1304,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblBkp;
     private javax.swing.JLabel lblMensagem;
@@ -1275,6 +1314,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTable tabelaAlterar;
     private javax.swing.JTable tabelaCriar;
     private javax.swing.JTable tabelaDeletar;
+    private javax.swing.JTable tbApp;
     // End of variables declaration//GEN-END:variables
 
 }
