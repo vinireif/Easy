@@ -1,10 +1,20 @@
 package Frames;
 
+import Fonts.ConfigDomain.ConfigDomain;
 import Fonts.DataBase;
 import Fonts.Executar.Application;
 import Fonts.Update;
 import java.awt.Color;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.xpath.XPathExpressionException;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -14,6 +24,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private DataBase db;
     private DefaultTableModel tableAppModel;
+    private ConfigDomain cd;
     
     /** Creates new form MainFrame */
     public MainFrame(DataBase bd) {
@@ -21,12 +32,12 @@ public class MainFrame extends javax.swing.JFrame {
         this.getContentPane().setBackground(Color.white);
         this.tableAppModel = (DefaultTableModel)this.tbApp.getModel();
         new Update(this, bd).start();
+        this.cd = new ConfigDomain();
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
@@ -69,7 +80,7 @@ public class MainFrame extends javax.swing.JFrame {
         radioPersonalizado = new javax.swing.JRadioButton();
         btnPesquisar = new javax.swing.JButton();
         lblMensagem = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnStop = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -99,23 +110,18 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         tbApp.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][]
-            {
+            new Object [][] {
 
             },
-            new String []
-            {
+            new String [] {
                 "ID", "Nome", "Endereço"
             }
-        )
-        {
-            boolean[] canEdit = new boolean []
-            {
+        ) {
+            boolean[] canEdit = new boolean [] {
                 false, false, false
             };
 
-            public boolean isCellEditable(int rowIndex, int columnIndex)
-            {
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
@@ -128,10 +134,8 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Executar/error.png"))); // NOI18N
         jLabel5.setText(" Remover Aplicação");
         jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel5.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel5MouseClicked(evt);
             }
         });
@@ -206,8 +210,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
 
         tabelaCriar.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][]
-            {
+            new Object [][] {
                 {"-Xrs"},
                 {"-Xmn512m"},
                 {"-Xms1024m"},
@@ -216,19 +219,15 @@ public class MainFrame extends javax.swing.JFrame {
                 {"-XX:+UseParNewGC"},
                 {"-XX:+UseConcMarkSweepGC"}
             },
-            new String []
-            {
+            new String [] {
                 "Chave"
             }
-        )
-        {
-            Class[] types = new Class []
-            {
+        ) {
+            Class[] types = new Class [] {
                 java.lang.String.class
             };
 
-            public Class getColumnClass(int columnIndex)
-            {
+            public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
@@ -242,21 +241,16 @@ public class MainFrame extends javax.swing.JFrame {
         btnDelCriar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnDelCriar.setEnabled(false);
         btnDelCriar.setOpaque(true);
-        btnDelCriar.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseEntered(java.awt.event.MouseEvent evt)
-            {
+        btnDelCriar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnDelCriarMouseEntered(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt)
-            {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnDelCriarMouseExited(evt);
             }
         });
-        btnDelCriar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        btnDelCriar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDelCriarActionPerformed(evt);
             }
         });
@@ -270,21 +264,16 @@ public class MainFrame extends javax.swing.JFrame {
         btnCriar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnCriar.setEnabled(false);
         btnCriar.setOpaque(true);
-        btnCriar.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseEntered(java.awt.event.MouseEvent evt)
-            {
+        btnCriar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnCriarMouseEntered(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt)
-            {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnCriarMouseExited(evt);
             }
         });
-        btnCriar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        btnCriar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCriarActionPerformed(evt);
             }
         });
@@ -296,21 +285,16 @@ public class MainFrame extends javax.swing.JFrame {
         btnAddCriar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnAddCriar.setEnabled(false);
         btnAddCriar.setOpaque(true);
-        btnAddCriar.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseEntered(java.awt.event.MouseEvent evt)
-            {
+        btnAddCriar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnAddCriarMouseEntered(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt)
-            {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnAddCriarMouseExited(evt);
             }
         });
-        btnAddCriar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        btnAddCriar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddCriarActionPerformed(evt);
             }
         });
@@ -351,25 +335,20 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
 
         tabelaAlterar.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][]
-            {
+            new Object [][] {
                 {"-XX:MaxPermSize=192m", "-XX:MaxPermSize=512m"},
                 {"-client", "-server"},
                 {"-Xmx512m", "-Xmx2048m"}
             },
-            new String []
-            {
+            new String [] {
                 "De", "Para"
             }
-        )
-        {
-            Class[] types = new Class []
-            {
+        ) {
+            Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class
             };
 
-            public Class getColumnClass(int columnIndex)
-            {
+            public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
@@ -383,21 +362,16 @@ public class MainFrame extends javax.swing.JFrame {
         btnAddAlterar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnAddAlterar.setEnabled(false);
         btnAddAlterar.setOpaque(true);
-        btnAddAlterar.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseEntered(java.awt.event.MouseEvent evt)
-            {
+        btnAddAlterar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnAddAlterarMouseEntered(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt)
-            {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnAddAlterarMouseExited(evt);
             }
         });
-        btnAddAlterar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        btnAddAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddAlterarActionPerformed(evt);
             }
         });
@@ -409,21 +383,16 @@ public class MainFrame extends javax.swing.JFrame {
         btnDelAlterar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnDelAlterar.setEnabled(false);
         btnDelAlterar.setOpaque(true);
-        btnDelAlterar.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseEntered(java.awt.event.MouseEvent evt)
-            {
+        btnDelAlterar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnDelAlterarMouseEntered(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt)
-            {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnDelAlterarMouseExited(evt);
             }
         });
-        btnDelAlterar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        btnDelAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDelAlterarActionPerformed(evt);
             }
         });
@@ -437,21 +406,16 @@ public class MainFrame extends javax.swing.JFrame {
         btnAlterar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnAlterar.setEnabled(false);
         btnAlterar.setOpaque(true);
-        btnAlterar.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseEntered(java.awt.event.MouseEvent evt)
-            {
+        btnAlterar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnAlterarMouseEntered(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt)
-            {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnAlterarMouseExited(evt);
             }
         });
-        btnAlterar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAlterarActionPerformed(evt);
             }
         });
@@ -492,23 +456,18 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
 
         tabelaDeletar.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][]
-            {
+            new Object [][] {
                 {"-XX:NewRatio=2"}
             },
-            new String []
-            {
+            new String [] {
                 "Chave"
             }
-        )
-        {
-            Class[] types = new Class []
-            {
+        ) {
+            Class[] types = new Class [] {
                 java.lang.String.class
             };
 
-            public Class getColumnClass(int columnIndex)
-            {
+            public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
@@ -522,21 +481,16 @@ public class MainFrame extends javax.swing.JFrame {
         btnAddDeletar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnAddDeletar.setEnabled(false);
         btnAddDeletar.setOpaque(true);
-        btnAddDeletar.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseEntered(java.awt.event.MouseEvent evt)
-            {
+        btnAddDeletar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnAddDeletarMouseEntered(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt)
-            {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnAddDeletarMouseExited(evt);
             }
         });
-        btnAddDeletar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        btnAddDeletar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddDeletarActionPerformed(evt);
             }
         });
@@ -548,21 +502,16 @@ public class MainFrame extends javax.swing.JFrame {
         btnDelDeletar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnDelDeletar.setEnabled(false);
         btnDelDeletar.setOpaque(true);
-        btnDelDeletar.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseEntered(java.awt.event.MouseEvent evt)
-            {
+        btnDelDeletar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnDelDeletarMouseEntered(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt)
-            {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnDelDeletarMouseExited(evt);
             }
         });
-        btnDelDeletar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        btnDelDeletar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDelDeletarActionPerformed(evt);
             }
         });
@@ -576,21 +525,16 @@ public class MainFrame extends javax.swing.JFrame {
         btnDeletar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnDeletar.setEnabled(false);
         btnDeletar.setOpaque(true);
-        btnDeletar.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseEntered(java.awt.event.MouseEvent evt)
-            {
+        btnDeletar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnDeletarMouseEntered(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt)
-            {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnDeletarMouseExited(evt);
             }
         });
-        btnDeletar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        btnDeletar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeletarActionPerformed(evt);
             }
         });
@@ -629,10 +573,8 @@ public class MainFrame extends javax.swing.JFrame {
         painelAba.addTab("Deletar", jPanel7);
 
         dirDomain.setToolTipText("");
-        dirDomain.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+        dirDomain.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 dirDomainFocusLost(evt);
             }
         });
@@ -644,10 +586,8 @@ public class MainFrame extends javax.swing.JFrame {
         radioPadrao.setSelected(true);
         radioPadrao.setText("Padrão");
         radioPadrao.setEnabled(false);
-        radioPadrao.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        radioPadrao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 radioPadraoActionPerformed(evt);
             }
         });
@@ -656,10 +596,8 @@ public class MainFrame extends javax.swing.JFrame {
         radioPersonalizado.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         radioPersonalizado.setText("Personalizado");
         radioPersonalizado.setEnabled(false);
-        radioPersonalizado.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        radioPersonalizado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 radioPersonalizadoActionPerformed(evt);
             }
         });
@@ -671,17 +609,13 @@ public class MainFrame extends javax.swing.JFrame {
         btnPesquisar.setContentAreaFilled(false);
         btnPesquisar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnPesquisar.setOpaque(true);
-        btnPesquisar.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPesquisarActionPerformed(evt);
             }
         });
-        btnPesquisar.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+        btnPesquisar.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 btnPesquisarFocusLost(evt);
             }
         });
@@ -691,12 +625,12 @@ public class MainFrame extends javax.swing.JFrame {
         lblMensagem.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblMensagem.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        jButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/ConfigDomain/stop.png"))); // NOI18N
-        jButton1.setText("Stop-Domain");
-        jButton1.setBorderPainted(false);
-        jButton1.setContentAreaFilled(false);
-        jButton1.setOpaque(true);
+        btnStop.setBackground(new java.awt.Color(255, 255, 255));
+        btnStop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/ConfigDomain/stop.png"))); // NOI18N
+        btnStop.setText("Stop-Domain");
+        btnStop.setBorderPainted(false);
+        btnStop.setContentAreaFilled(false);
+        btnStop.setOpaque(true);
 
         jButton2.setBackground(new java.awt.Color(255, 255, 255));
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/ConfigDomain/help.png"))); // NOI18N
@@ -713,7 +647,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(btnStop)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2))
                     .addGroup(jPanel4Layout.createSequentialGroup()
@@ -760,7 +694,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(lblBkp, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(btnStop)
                     .addComponent(jButton2))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -773,7 +707,7 @@ public class MainFrame extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 852, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -811,11 +745,11 @@ public class MainFrame extends javax.swing.JFrame {
     
     /* ConfigDomain*/
     private void btnDelCriarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDelCriarMouseEntered
-        colocarMouseBtnAddDel(btnDelCriar);
+        this.cd.colocarMouseBtnAddDel(btnDelCriar);
     }//GEN-LAST:event_btnDelCriarMouseEntered
 
     private void btnDelCriarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDelCriarMouseExited
-        tirarMouseBtnAddDel(btnDelCriar);
+        this.cd.tirarMouseBtnAddDel(btnDelCriar);
     }//GEN-LAST:event_btnDelCriarMouseExited
 
     private void btnDelCriarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelCriarActionPerformed
@@ -827,10 +761,10 @@ public class MainFrame extends javax.swing.JFrame {
         }
 
         if(tabelaCriar.getRowCount() > qtdCriar){
-            this.modelCriar.removeRow(tabelaCriar.getRowCount()-1);
+            this.cd.getModelCriar().removeRow(tabelaCriar.getRowCount()-1);
         }
 
-        if(this.modelCriar.getRowCount() > 0){
+        if(this.cd.getModelCriar().getRowCount() > 0){
             btnCriar.setEnabled(true);
         } else {
             btnCriar.setEnabled(false);
@@ -840,7 +774,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void btnCriarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCriarMouseEntered
 
         if(btnCriar.isEnabled()){
-            colocarMouseBtnAcao(btnCriar);
+            this.cd.colocarMouseBtnAcao(btnCriar);
         }
 
     }//GEN-LAST:event_btnCriarMouseEntered
@@ -848,7 +782,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void btnCriarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCriarMouseExited
 
         if(btnCriar.isEnabled()){
-            tirarMouseBtnAcao(btnCriar);
+            this.cd.tirarMouseBtnAcao(btnCriar);
         }
 
     }//GEN-LAST:event_btnCriarMouseExited
@@ -860,41 +794,41 @@ public class MainFrame extends javax.swing.JFrame {
 
         try {
             File xml = new File(dirDomain.getText() + "\\config\\domain.xml");
-            stopDomain(false);
-            backupDomainXml(xml);
+            this.cd.stopDomain(false, dirDomain);
+            this.cd.backupDomainXml(xml, dirDomain);
 
-            if(isPadrao()){
-                criarConfigPadrao(xml);
+            if(this.cd.isPadrao(radioPadrao)){
+                this.cd.criarConfigPadrao(xml, lblStatus, lblMensagem);
             } else {
-                criarConfigPerson(xml);
+                this.cd.criarConfigPerson(xml, lblStatus, lblMensagem);
             }
         } catch (IOException ex) {
-            Logger.getLogger(ConfigDomainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConfigDomain.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {
-            Logger.getLogger(ConfigDomainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConfigDomain.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SAXException ex) {
-            Logger.getLogger(ConfigDomainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConfigDomain.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParserConfigurationException ex) {
-            Logger.getLogger(ConfigDomainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConfigDomain.class.getName()).log(Level.SEVERE, null, ex);
         } catch (TransformerException ex) {
-            Logger.getLogger(ConfigDomainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConfigDomain.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }//GEN-LAST:event_btnCriarActionPerformed
 
     private void btnAddCriarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddCriarMouseEntered
-        colocarMouseBtnAddDel(btnAddCriar);
+        this.cd.colocarMouseBtnAddDel(btnAddCriar);
     }//GEN-LAST:event_btnAddCriarMouseEntered
 
     private void btnAddCriarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddCriarMouseExited
-        tirarMouseBtnAddDel(btnAddCriar);
+        this.cd.tirarMouseBtnAddDel(btnAddCriar);
     }//GEN-LAST:event_btnAddCriarMouseExited
 
     private void btnAddCriarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCriarActionPerformed
 
-        this.modelCriar.addRow(new Object[]{"", ""});
+        this.cd.getModelCriar().addRow(new Object[]{"", ""});
 
-        if(this.modelCriar.getRowCount() > 0){
+        if(this.cd.getModelCriar().getRowCount() > 0){
             btnCriar.setEnabled(true);
         } else {
             btnCriar.setEnabled(false);
@@ -903,18 +837,18 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddCriarActionPerformed
 
     private void btnAddAlterarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddAlterarMouseEntered
-        colocarMouseBtnAddDel(btnAddAlterar);
+        this.cd.colocarMouseBtnAddDel(btnAddAlterar);
     }//GEN-LAST:event_btnAddAlterarMouseEntered
 
     private void btnAddAlterarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddAlterarMouseExited
-        tirarMouseBtnAddDel(btnAddAlterar);
+        this.cd.tirarMouseBtnAddDel(btnAddAlterar);
     }//GEN-LAST:event_btnAddAlterarMouseExited
 
     private void btnAddAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddAlterarActionPerformed
 
-        this.modelAlterar.addRow(new Object[]{"", ""});
+        this.cd.getModelAlterar().addRow(new Object[]{"", ""});
 
-        if(this.modelAlterar.getRowCount() > 0){
+        if(this.cd.getModelAlterar().getRowCount() > 0){
             btnAlterar.setEnabled(true);
         } else {
             btnAlterar.setEnabled(false);
@@ -923,11 +857,11 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddAlterarActionPerformed
 
     private void btnDelAlterarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDelAlterarMouseEntered
-        colocarMouseBtnAddDel(btnDelAlterar);
+        this.cd.colocarMouseBtnAddDel(btnDelAlterar);
     }//GEN-LAST:event_btnDelAlterarMouseEntered
 
     private void btnDelAlterarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDelAlterarMouseExited
-        tirarMouseBtnAddDel(btnDelAlterar);
+        this.cd.tirarMouseBtnAddDel(btnDelAlterar);
     }//GEN-LAST:event_btnDelAlterarMouseExited
 
     private void btnDelAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelAlterarActionPerformed
@@ -939,10 +873,10 @@ public class MainFrame extends javax.swing.JFrame {
         }
 
         if(tabelaAlterar.getRowCount() > qtdAlterar){
-            this.modelAlterar.removeRow(tabelaAlterar.getRowCount()-1);
+            this.cd.getModelAlterar().removeRow(tabelaAlterar.getRowCount()-1);
         }
 
-        if(this.modelAlterar.getRowCount() > 0){
+        if(this.cd.getModelAlterar().getRowCount() > 0){
             btnAlterar.setEnabled(true);
         } else {
             btnAlterar.setEnabled(false);
@@ -953,7 +887,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void btnAlterarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAlterarMouseEntered
 
         if(btnAlterar.isEnabled()){
-            colocarMouseBtnAcao(btnAlterar);
+            this.cd.colocarMouseBtnAcao(btnAlterar);
         }
 
     }//GEN-LAST:event_btnAlterarMouseEntered
@@ -961,7 +895,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void btnAlterarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAlterarMouseExited
 
         if(btnAlterar.isEnabled()){
-            tirarMouseBtnAcao(btnAlterar);
+            this.cd.tirarMouseBtnAcao(btnAlterar);
         }
 
     }//GEN-LAST:event_btnAlterarMouseExited
@@ -970,44 +904,44 @@ public class MainFrame extends javax.swing.JFrame {
 
         try {
             File xml = new File(dirDomain.getText() + "\\config\\domain.xml");
-            stopDomain(false);
-            backupDomainXml(xml);
+            this.cd.stopDomain(false, dirDomain);
+            this.cd.backupDomainXml(xml, dirDomain);
 
-            if(isPadrao()){
-                alterarConfigPadrao(xml);
+            if(this.cd.isPadrao(radioPadrao)){
+                this.cd.alterarConfigPadrao(xml, lblStatus, lblMensagem);
             } else {
-                alterarConfigPerson(xml);
+                this.cd.alterarConfigPerson(xml, lblStatus, lblMensagem);
             }
 
         } catch (IOException ex) {
-            Logger.getLogger(ConfigDomainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConfigDomain.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParserConfigurationException ex) {
-            Logger.getLogger(ConfigDomainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConfigDomain.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SAXException ex) {
-            Logger.getLogger(ConfigDomainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConfigDomain.class.getName()).log(Level.SEVERE, null, ex);
         } catch (XPathExpressionException ex) {
-            Logger.getLogger(ConfigDomainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConfigDomain.class.getName()).log(Level.SEVERE, null, ex);
         } catch (TransformerException ex) {
-            Logger.getLogger(ConfigDomainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConfigDomain.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {
-            Logger.getLogger(ConfigDomainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConfigDomain.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnAddDeletarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddDeletarMouseEntered
-        colocarMouseBtnAddDel(btnAddDeletar);
+        this.cd.colocarMouseBtnAddDel(btnAddDeletar);
     }//GEN-LAST:event_btnAddDeletarMouseEntered
 
     private void btnAddDeletarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddDeletarMouseExited
-        tirarMouseBtnAddDel(btnAddDeletar);
+        this.cd.tirarMouseBtnAddDel(btnAddDeletar);
     }//GEN-LAST:event_btnAddDeletarMouseExited
 
     private void btnAddDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddDeletarActionPerformed
 
-        this.modelDeletar.addRow(new Object[]{"", ""});
+        this.cd.getModelDeletar().addRow(new Object[]{"", ""});
 
-        if(this.modelDeletar.getRowCount() > 0){
+        if(this.cd.getModelDeletar().getRowCount() > 0){
             btnDeletar.setEnabled(true);
         } else {
             btnDeletar.setEnabled(false);
@@ -1016,11 +950,11 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddDeletarActionPerformed
 
     private void btnDelDeletarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDelDeletarMouseEntered
-        colocarMouseBtnAddDel(btnDelDeletar);
+        this.cd.colocarMouseBtnAddDel(btnDelDeletar);
     }//GEN-LAST:event_btnDelDeletarMouseEntered
 
     private void btnDelDeletarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDelDeletarMouseExited
-        tirarMouseBtnAddDel(btnDelDeletar);
+        this.cd.tirarMouseBtnAddDel(btnDelDeletar);
     }//GEN-LAST:event_btnDelDeletarMouseExited
 
     private void btnDelDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelDeletarActionPerformed
@@ -1032,10 +966,10 @@ public class MainFrame extends javax.swing.JFrame {
         }
 
         if(tabelaDeletar.getRowCount() > qtdDelete){
-            this.modelDeletar.removeRow(tabelaDeletar.getRowCount()-1);
+            this.cd.getModelDeletar().removeRow(tabelaDeletar.getRowCount()-1);
         }
 
-        if(this.modelDeletar.getRowCount() > 0){
+        if(this.cd.getModelDeletar().getRowCount() > 0){
             btnDeletar.setEnabled(true);
         } else {
             btnDeletar.setEnabled(false);
@@ -1046,7 +980,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void btnDeletarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeletarMouseEntered
 
         if(btnDeletar.isEnabled()){
-            colocarMouseBtnAcao(btnDeletar);
+            this.cd.colocarMouseBtnAcao(btnDeletar);
         }
 
     }//GEN-LAST:event_btnDeletarMouseEntered
@@ -1054,7 +988,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void btnDeletarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeletarMouseExited
 
         if(btnDeletar.isEnabled()){
-            tirarMouseBtnAcao(btnDeletar);
+            this.cd.tirarMouseBtnAcao(btnDeletar);
         }
 
     }//GEN-LAST:event_btnDeletarMouseExited
@@ -1063,25 +997,25 @@ public class MainFrame extends javax.swing.JFrame {
 
         try {
             File xml = new File(dirDomain.getText() + "\\config\\domain.xml");
-            stopDomain(false);
-            backupDomainXml(xml);
+            this.cd.stopDomain(false, dirDomain);
+            this.cd.backupDomainXml(xml, dirDomain);
 
-            if(isPadrao()){
-                deletarConfigPadrao(xml);
+            if(this.cd.isPadrao(radioPadrao)){
+                this.cd.deletarConfigPadrao(xml, lblStatus, lblMensagem);
             } else {
-                deletarConfigPerson(xml);
+                this.cd.deletarConfigPerson(xml, lblStatus, lblMensagem);
             }
 
         } catch (IOException ex) {
-            Logger.getLogger(ConfigDomainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConfigDomain.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {
-            Logger.getLogger(ConfigDomainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConfigDomain.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SAXException ex) {
-            Logger.getLogger(ConfigDomainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConfigDomain.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParserConfigurationException ex) {
-            Logger.getLogger(ConfigDomainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConfigDomain.class.getName()).log(Level.SEVERE, null, ex);
         } catch (TransformerException ex) {
-            Logger.getLogger(ConfigDomainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConfigDomain.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }//GEN-LAST:event_btnDeletarActionPerformed
@@ -1090,14 +1024,14 @@ public class MainFrame extends javax.swing.JFrame {
 
         if(!dirDomain.getText().isEmpty()){
 
-            if(!existDomainXML()){
+            if(!this.cd.existDomainXML(dirDomain)){
                 radioPadrao.setEnabled(false);
                 radioPersonalizado.setEnabled(false);
                 btnCriar.setEnabled(false);
                 btnAlterar.setEnabled(false);
                 btnDeletar.setEnabled(false);
                 painelAba.setEnabled(false);
-                menuStop.setEnabled(false);
+                btnStop.setEnabled(false);
                 lblMensagem.setText("Arquivo domain.xml não existe! Verifique o caminho informado!");
             } else {
                 lblMensagem.setText("");
@@ -1107,8 +1041,8 @@ public class MainFrame extends javax.swing.JFrame {
                 btnAlterar.setEnabled(true);
                 btnDeletar.setEnabled(true);
                 painelAba.setEnabled(true);
-                menuStop.setEnabled(true);
-                if(isPadrao()){
+                btnStop.setEnabled(true);
+                if(this.cd.isPadrao(radioPadrao)){
                     btnAddAlterar.setEnabled(false);
                     btnAddCriar.setEnabled(false);
                     btnAddDeletar.setEnabled(false);
@@ -1137,14 +1071,14 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void radioPadraoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioPadraoActionPerformed
 
-        if(existDomainXML()){
-            deleteTabelaAlterar();
-            deleteTabelaCriar();
-            deleteTabelaDeletar();
+        if(this.cd.existDomainXML(dirDomain)){
+            this.cd.deleteTabelaAlterar();
+            this.cd.deleteTabelaCriar();
+            this.cd.deleteTabelaDeletar();
 
-            populaTabelaAlterar();
-            populaTabelaCriar();
-            populaTabelaDeletar();
+            this.cd.populaTabelaAlterar();
+            this.cd.populaTabelaCriar();
+            this.cd.populaTabelaDeletar();
 
             btnAddAlterar.setEnabled(false);
             btnAddCriar.setEnabled(false);
@@ -1160,14 +1094,14 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void radioPersonalizadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioPersonalizadoActionPerformed
 
-        if(existDomainXML()){
-            deleteTabelaAlterar();
-            deleteTabelaCriar();
-            deleteTabelaDeletar();
+        if(this.cd.existDomainXML(dirDomain)){
+            this.cd.deleteTabelaAlterar();
+            this.cd.deleteTabelaCriar();
+            this.cd.deleteTabelaDeletar();
 
-            populaTabelaAlterar();
-            populaTabelaCriar();
-            populaTabelaDeletar();
+            this.cd.populaTabelaAlterar();
+            this.cd.populaTabelaCriar();
+            this.cd.populaTabelaDeletar();
 
             painelAba.setEnabled(true);
             btnAddAlterar.setEnabled(true);
@@ -1208,14 +1142,14 @@ public class MainFrame extends javax.swing.JFrame {
                 if(res == JFileChooser.APPROVE_OPTION){
                     dirDomain.setText(fc.getSelectedFile().getAbsolutePath());
 
-                    if(!existDomainXML()){
+                    if(!this.cd.existDomainXML(dirDomain)){
                         radioPadrao.setEnabled(false);
                         radioPersonalizado.setEnabled(false);
                         painelAba.setEnabled(false);
                         btnCriar.setEnabled(false);
                         btnAlterar.setEnabled(false);
                         btnDeletar.setEnabled(false);
-                        menuStop.setEnabled(false);
+                        btnStop.setEnabled(false);
                         lblMensagem.setText("Arquivo domain.xml não existe! Verifique o caminho informado!");
                     } else {
 
@@ -1225,8 +1159,8 @@ public class MainFrame extends javax.swing.JFrame {
                         btnCriar.setEnabled(true);
                         btnAlterar.setEnabled(true);
                         btnDeletar.setEnabled(true);
-                        menuStop.setEnabled(true);
-                        if(isPadrao()){
+                        btnStop.setEnabled(true);
+                        if(this.cd.isPadrao(radioPadrao)){
                             btnAddAlterar.setEnabled(false);
                             btnAddCriar.setEnabled(false);
                             btnAddDeletar.setEnabled(false);
@@ -1282,8 +1216,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnDelDeletar;
     private javax.swing.JButton btnDeletar;
     private javax.swing.JButton btnPesquisar;
+    private javax.swing.JButton btnStop;
     private javax.swing.JTextField dirDomain;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
