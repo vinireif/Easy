@@ -1,6 +1,7 @@
 package Fonts.Executar;
 
 import Fonts.DataBase;
+import Frames.MainFrame;
 import VBUtils.VBChooser;
 import VBUtils.VBMsg;
 import java.io.File;
@@ -14,17 +15,20 @@ import javax.swing.table.DefaultTableModel;
 public class AddVariable extends javax.swing.JDialog
 {
     private DataBase db;
+    private MainFrame mf;
     private DefaultTableModel tbVarModel;
     
     /**
      * Creates new form AddVariable
      */
-    public AddVariable(DataBase db)
+    public AddVariable(DataBase db, MainFrame mf)
     {
         super(new JFrame(), true);
         this.db = db;
+        this.mf = mf;
         initComponents();
         this.tbVarModel = (DefaultTableModel) this.tbVars.getModel();
+        this.updateTables();
     }
 
     @SuppressWarnings("unchecked")
@@ -46,6 +50,7 @@ public class AddVariable extends javax.swing.JDialog
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Adicionar Variável");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -53,8 +58,7 @@ public class AddVariable extends javax.swing.JDialog
 
         jLabel2.setText("Endereço:");
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Executar/error.png"))); // NOI18N
-        jLabel5.setText("Cancelar");
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Executar/exit.png"))); // NOI18N
         jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabel5.addMouseListener(new java.awt.event.MouseAdapter()
         {
@@ -141,15 +145,15 @@ public class AddVariable extends javax.swing.JDialog
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE)
                     .addComponent(txtName)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(txtAddress)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 343, Short.MAX_VALUE)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel4))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -158,8 +162,8 @@ public class AddVariable extends javax.swing.JDialog
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel6)))
+                        .addGap(114, 114, 114)
+                        .addComponent(jLabel5)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -179,12 +183,12 @@ public class AddVariable extends javax.swing.JDialog
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jLabel5))
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -201,6 +205,7 @@ public class AddVariable extends javax.swing.JDialog
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jLabel5MouseClicked
@@ -220,14 +225,23 @@ public class AddVariable extends javax.swing.JDialog
             VBMsg.info("Campo ENDEREÇO obrigatório");
             return;
         }
-        this.db.getListApps().add(new Application(this.db.getProxIdAppList(), this.txtName.getText().trim(), this.txtAddress.getText().trim()));
+        String name = this.txtName.getText().trim();
+        if(!name.contains("$"))
+        {
+            name = "$" + name;
+        }
+        this.db.getListVars().add(new Variable(this.db.getProxIdVarList(), name, this.txtAddress.getText().trim()));
         this.updateTables();
-        this.dispose();
+        this.txtName.setText("");
+        this.txtAddress.setText("");
+        this.txtName.requestFocus();
+        this.mf.updateToolTipExec();
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnPesquisarActionPerformed
     {//GEN-HEADEREND:event_btnPesquisarActionPerformed
         VBChooser chooser = new VBChooser();
+        chooser.setType(VBChooser.FILES_AND_DIRECTORIES);
         File f = chooser.showOpenDialog();
         if(f != null)
         {

@@ -1,5 +1,6 @@
 package Fonts;
 
+import Frames.MainFrame;
 import VBUtils.VBSystem;
 
 /**
@@ -14,7 +15,7 @@ public class Main {
     public static void main(String[] args) 
     {
         VBSystem.setWindowsTheme();
-        
+        new MainFrame(new DataBase()).setVisible(true);
     }
 
 }

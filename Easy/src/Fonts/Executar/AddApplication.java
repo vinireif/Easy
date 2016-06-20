@@ -21,9 +21,9 @@ public class AddApplication extends javax.swing.JDialog
     public AddApplication(DataBase db, MainFrame mf)
     {
         super(new JFrame(), true);
-        initComponents();
         this.db = db;
         this.mf = mf;
+        initComponents();
     }
     
     @SuppressWarnings("unchecked")
@@ -41,6 +41,7 @@ public class AddApplication extends javax.swing.JDialog
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Adicionar Aplicação");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -157,6 +158,7 @@ public class AddApplication extends javax.swing.JDialog
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnPesquisarActionPerformed
     {//GEN-HEADEREND:event_btnPesquisarActionPerformed
         VBChooser chooser = new VBChooser();
+        chooser.setType(VBChooser.FILES_AND_DIRECTORIES);
         File f = chooser.showOpenDialog();
         if(f != null)
         {

@@ -14,6 +14,7 @@ public class DataBase implements Serializable
     //Executar
     private ArrayList<Application> listApps = new ArrayList<>();
     private ArrayList<Variable> listVars= new ArrayList<>();
+    private ArrayList<String> listHist = new ArrayList<>();
     
     //
     
@@ -22,6 +23,16 @@ public class DataBase implements Serializable
     {
     }
 
+    public ArrayList<String> getListHist()
+    {
+        return listHist;
+    }
+
+    public void setListHist(ArrayList<String> listHist)
+    {
+        this.listHist = listHist;
+    }
+    
     public ArrayList<Variable> getListVars()
     {
         return listVars;
@@ -104,7 +115,7 @@ public class DataBase implements Serializable
         {
             if(app.getId() == id)
             {
-                this.listApps.remove(app);
+                this.listVars.remove(app);
                 return;
             }
         }

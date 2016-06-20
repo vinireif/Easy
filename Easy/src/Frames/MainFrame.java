@@ -2,14 +2,22 @@ package Frames;
 
 import Fonts.ConfigDomain.ConfigDomain;
 import Fonts.DataBase;
+import Fonts.Executar.AddApplication;
+import Fonts.Executar.AddVariable;
 import Fonts.Executar.Application;
+import Fonts.Executar.HistFrame;
+import Fonts.Executar.Variable;
 import Fonts.Update;
+import VBUtils.VBMsg;
+import VBUtils.VBSystem;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -27,24 +35,27 @@ public class MainFrame extends javax.swing.JFrame {
     private ConfigDomain cd;
     
     /** Creates new form MainFrame */
-    public MainFrame(DataBase bd) {
+    public MainFrame(DataBase db) {
         initComponents();
+        this.db = db;
         this.getContentPane().setBackground(Color.white);
         this.tableAppModel = (DefaultTableModel)this.tbApp.getModel();
-        new Update(this, bd).start();
+        new Update(this, db).start();
         this.cd = new ConfigDomain();
+        this.updateToolTipExec();
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         jPanel1 = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtExec = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         tbApp = new javax.swing.JTable();
@@ -84,6 +95,8 @@ public class MainFrame extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Easy");
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -106,23 +119,50 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel2.setText("Executar:");
 
+        txtExec.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyReleased(java.awt.event.KeyEvent evt)
+            {
+                txtExecKeyReleased(evt);
+            }
+        });
+
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Executar/right-arrow.png"))); // NOI18N
         jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                jLabel3MouseClicked(evt);
+            }
+        });
 
         tbApp.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Object [][]
+            {
 
             },
-            new String [] {
+            new String []
+            {
                 "ID", "Nome", "Endereço"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
+        )
+        {
+            boolean[] canEdit = new boolean []
+            {
                 false, false, false
             };
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
+            public boolean isCellEditable(int rowIndex, int columnIndex)
+            {
                 return canEdit [columnIndex];
+            }
+        });
+        tbApp.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                tbAppMouseClicked(evt);
             }
         });
         jScrollPane4.setViewportView(tbApp);
@@ -130,12 +170,21 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Executar/plus.png"))); // NOI18N
         jLabel4.setText(" Add Aplicação");
         jLabel4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                jLabel4MouseClicked(evt);
+            }
+        });
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Executar/error.png"))); // NOI18N
         jLabel5.setText(" Remover Aplicação");
         jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jLabel5.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
                 jLabel5MouseClicked(evt);
             }
         });
@@ -143,10 +192,24 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Executar/history.png"))); // NOI18N
         jLabel6.setText("Histórico");
         jLabel6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel6.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                jLabel6MouseClicked(evt);
+            }
+        });
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Executar/list.png"))); // NOI18N
         jLabel7.setText("Variáveis");
         jLabel7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel7.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                jLabel7MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -159,7 +222,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1)
+                        .addComponent(txtExec)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel3))
                     .addGroup(jPanel3Layout.createSequentialGroup()
@@ -179,8 +242,8 @@ public class MainFrame extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(txtExec, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)))
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 469, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -210,7 +273,8 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
 
         tabelaCriar.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Object [][]
+            {
                 {"-Xrs"},
                 {"-Xmn512m"},
                 {"-Xms1024m"},
@@ -219,15 +283,19 @@ public class MainFrame extends javax.swing.JFrame {
                 {"-XX:+UseParNewGC"},
                 {"-XX:+UseConcMarkSweepGC"}
             },
-            new String [] {
+            new String []
+            {
                 "Chave"
             }
-        ) {
-            Class[] types = new Class [] {
+        )
+        {
+            Class[] types = new Class []
+            {
                 java.lang.String.class
             };
 
-            public Class getColumnClass(int columnIndex) {
+            public Class getColumnClass(int columnIndex)
+            {
                 return types [columnIndex];
             }
         });
@@ -241,16 +309,21 @@ public class MainFrame extends javax.swing.JFrame {
         btnDelCriar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnDelCriar.setEnabled(false);
         btnDelCriar.setOpaque(true);
-        btnDelCriar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
+        btnDelCriar.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseEntered(java.awt.event.MouseEvent evt)
+            {
                 btnDelCriarMouseEntered(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
+            public void mouseExited(java.awt.event.MouseEvent evt)
+            {
                 btnDelCriarMouseExited(evt);
             }
         });
-        btnDelCriar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnDelCriar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 btnDelCriarActionPerformed(evt);
             }
         });
@@ -264,16 +337,21 @@ public class MainFrame extends javax.swing.JFrame {
         btnCriar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnCriar.setEnabled(false);
         btnCriar.setOpaque(true);
-        btnCriar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
+        btnCriar.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseEntered(java.awt.event.MouseEvent evt)
+            {
                 btnCriarMouseEntered(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
+            public void mouseExited(java.awt.event.MouseEvent evt)
+            {
                 btnCriarMouseExited(evt);
             }
         });
-        btnCriar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnCriar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 btnCriarActionPerformed(evt);
             }
         });
@@ -285,16 +363,21 @@ public class MainFrame extends javax.swing.JFrame {
         btnAddCriar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnAddCriar.setEnabled(false);
         btnAddCriar.setOpaque(true);
-        btnAddCriar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
+        btnAddCriar.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseEntered(java.awt.event.MouseEvent evt)
+            {
                 btnAddCriarMouseEntered(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
+            public void mouseExited(java.awt.event.MouseEvent evt)
+            {
                 btnAddCriarMouseExited(evt);
             }
         });
-        btnAddCriar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnAddCriar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 btnAddCriarActionPerformed(evt);
             }
         });
@@ -335,20 +418,25 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
 
         tabelaAlterar.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Object [][]
+            {
                 {"-XX:MaxPermSize=192m", "-XX:MaxPermSize=512m"},
                 {"-client", "-server"},
                 {"-Xmx512m", "-Xmx2048m"}
             },
-            new String [] {
+            new String []
+            {
                 "De", "Para"
             }
-        ) {
-            Class[] types = new Class [] {
+        )
+        {
+            Class[] types = new Class []
+            {
                 java.lang.String.class, java.lang.String.class
             };
 
-            public Class getColumnClass(int columnIndex) {
+            public Class getColumnClass(int columnIndex)
+            {
                 return types [columnIndex];
             }
         });
@@ -362,16 +450,21 @@ public class MainFrame extends javax.swing.JFrame {
         btnAddAlterar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnAddAlterar.setEnabled(false);
         btnAddAlterar.setOpaque(true);
-        btnAddAlterar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
+        btnAddAlterar.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseEntered(java.awt.event.MouseEvent evt)
+            {
                 btnAddAlterarMouseEntered(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
+            public void mouseExited(java.awt.event.MouseEvent evt)
+            {
                 btnAddAlterarMouseExited(evt);
             }
         });
-        btnAddAlterar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnAddAlterar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 btnAddAlterarActionPerformed(evt);
             }
         });
@@ -383,16 +476,21 @@ public class MainFrame extends javax.swing.JFrame {
         btnDelAlterar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnDelAlterar.setEnabled(false);
         btnDelAlterar.setOpaque(true);
-        btnDelAlterar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
+        btnDelAlterar.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseEntered(java.awt.event.MouseEvent evt)
+            {
                 btnDelAlterarMouseEntered(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
+            public void mouseExited(java.awt.event.MouseEvent evt)
+            {
                 btnDelAlterarMouseExited(evt);
             }
         });
-        btnDelAlterar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnDelAlterar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 btnDelAlterarActionPerformed(evt);
             }
         });
@@ -406,16 +504,21 @@ public class MainFrame extends javax.swing.JFrame {
         btnAlterar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnAlterar.setEnabled(false);
         btnAlterar.setOpaque(true);
-        btnAlterar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
+        btnAlterar.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseEntered(java.awt.event.MouseEvent evt)
+            {
                 btnAlterarMouseEntered(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
+            public void mouseExited(java.awt.event.MouseEvent evt)
+            {
                 btnAlterarMouseExited(evt);
             }
         });
-        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnAlterar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 btnAlterarActionPerformed(evt);
             }
         });
@@ -456,18 +559,23 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
 
         tabelaDeletar.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Object [][]
+            {
                 {"-XX:NewRatio=2"}
             },
-            new String [] {
+            new String []
+            {
                 "Chave"
             }
-        ) {
-            Class[] types = new Class [] {
+        )
+        {
+            Class[] types = new Class []
+            {
                 java.lang.String.class
             };
 
-            public Class getColumnClass(int columnIndex) {
+            public Class getColumnClass(int columnIndex)
+            {
                 return types [columnIndex];
             }
         });
@@ -481,16 +589,21 @@ public class MainFrame extends javax.swing.JFrame {
         btnAddDeletar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnAddDeletar.setEnabled(false);
         btnAddDeletar.setOpaque(true);
-        btnAddDeletar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
+        btnAddDeletar.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseEntered(java.awt.event.MouseEvent evt)
+            {
                 btnAddDeletarMouseEntered(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
+            public void mouseExited(java.awt.event.MouseEvent evt)
+            {
                 btnAddDeletarMouseExited(evt);
             }
         });
-        btnAddDeletar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnAddDeletar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 btnAddDeletarActionPerformed(evt);
             }
         });
@@ -502,16 +615,21 @@ public class MainFrame extends javax.swing.JFrame {
         btnDelDeletar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnDelDeletar.setEnabled(false);
         btnDelDeletar.setOpaque(true);
-        btnDelDeletar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
+        btnDelDeletar.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseEntered(java.awt.event.MouseEvent evt)
+            {
                 btnDelDeletarMouseEntered(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
+            public void mouseExited(java.awt.event.MouseEvent evt)
+            {
                 btnDelDeletarMouseExited(evt);
             }
         });
-        btnDelDeletar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnDelDeletar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 btnDelDeletarActionPerformed(evt);
             }
         });
@@ -525,16 +643,21 @@ public class MainFrame extends javax.swing.JFrame {
         btnDeletar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnDeletar.setEnabled(false);
         btnDeletar.setOpaque(true);
-        btnDeletar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
+        btnDeletar.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseEntered(java.awt.event.MouseEvent evt)
+            {
                 btnDeletarMouseEntered(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
+            public void mouseExited(java.awt.event.MouseEvent evt)
+            {
                 btnDeletarMouseExited(evt);
             }
         });
-        btnDeletar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnDeletar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 btnDeletarActionPerformed(evt);
             }
         });
@@ -573,8 +696,10 @@ public class MainFrame extends javax.swing.JFrame {
         painelAba.addTab("Deletar", jPanel7);
 
         dirDomain.setToolTipText("");
-        dirDomain.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
+        dirDomain.addFocusListener(new java.awt.event.FocusAdapter()
+        {
+            public void focusLost(java.awt.event.FocusEvent evt)
+            {
                 dirDomainFocusLost(evt);
             }
         });
@@ -586,8 +711,10 @@ public class MainFrame extends javax.swing.JFrame {
         radioPadrao.setSelected(true);
         radioPadrao.setText("Padrão");
         radioPadrao.setEnabled(false);
-        radioPadrao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        radioPadrao.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 radioPadraoActionPerformed(evt);
             }
         });
@@ -596,8 +723,10 @@ public class MainFrame extends javax.swing.JFrame {
         radioPersonalizado.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         radioPersonalizado.setText("Personalizado");
         radioPersonalizado.setEnabled(false);
-        radioPersonalizado.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        radioPersonalizado.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 radioPersonalizadoActionPerformed(evt);
             }
         });
@@ -609,13 +738,17 @@ public class MainFrame extends javax.swing.JFrame {
         btnPesquisar.setContentAreaFilled(false);
         btnPesquisar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnPesquisar.setOpaque(true);
-        btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnPesquisar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 btnPesquisarActionPerformed(evt);
             }
         });
-        btnPesquisar.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
+        btnPesquisar.addFocusListener(new java.awt.event.FocusAdapter()
+        {
+            public void focusLost(java.awt.event.FocusEvent evt)
+            {
                 btnPesquisarFocusLost(evt);
             }
         });
@@ -730,6 +863,7 @@ public class MainFrame extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /* Executar App */
@@ -1205,6 +1339,86 @@ public class MainFrame extends javax.swing.JFrame {
         this.updateTablesExecutar();
     }//GEN-LAST:event_jLabel5MouseClicked
 
+    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jLabel4MouseClicked
+    {//GEN-HEADEREND:event_jLabel4MouseClicked
+        new AddApplication(db, this).setVisible(true);
+    }//GEN-LAST:event_jLabel4MouseClicked
+
+    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jLabel7MouseClicked
+    {//GEN-HEADEREND:event_jLabel7MouseClicked
+        new AddVariable(db, this).setVisible(true);
+    }//GEN-LAST:event_jLabel7MouseClicked
+
+    private void txtExecKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_txtExecKeyReleased
+    {//GEN-HEADEREND:event_txtExecKeyReleased
+        if(this.txtExec.getText().contains("$"))
+        {
+            for(Variable v : this.db.getListVars())
+            {
+                if(v.getKey().equalsIgnoreCase(this.txtExec.getText()))
+                {
+                    this.txtExec.setText(v.getValue());
+                    return;
+                }
+            }
+        }
+    }//GEN-LAST:event_txtExecKeyReleased
+
+    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jLabel6MouseClicked
+    {//GEN-HEADEREND:event_jLabel6MouseClicked
+        new HistFrame(db, this).setVisible(true);
+    }//GEN-LAST:event_jLabel6MouseClicked
+
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jLabel3MouseClicked
+    {//GEN-HEADEREND:event_jLabel3MouseClicked
+        if(this.txtExec.getText().equals(""))
+        {
+            return;
+        }
+        System.out.println("Execute: " + this.txtExec.getText());
+        try
+        {
+            this.db.getListHist().add(this.txtExec.getText());
+            File f = new File(this.txtExec.getText());
+            Desktop d = Desktop.getDesktop();
+            d.open(f);
+        } 
+        catch (Exception ex)
+        {
+            VBMsg.error("Erro ao executar:\n" + ex);
+        }
+    }//GEN-LAST:event_jLabel3MouseClicked
+
+    private void tbAppMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_tbAppMouseClicked
+    {//GEN-HEADEREND:event_tbAppMouseClicked
+        if(evt.getClickCount() >= 2)
+        {
+            this.txtExec.setText(this.tbApp.getValueAt(this.tbApp.getSelectedRow(), 2) + "");
+            this.jLabel3MouseClicked(null);
+        }
+    }//GEN-LAST:event_tbAppMouseClicked
+
+    public JTextField getTxtExec()
+    {
+        return txtExec;
+    }
+
+    public void setTxtExec(JTextField txtExec)
+    {
+        this.txtExec = txtExec;
+    }
+    
+    public void updateToolTipExec()
+    {
+        String tip = "<html><table border=0>";
+        for(Variable v : this.db.getListVars())
+        {
+            tip += "<tr><td>" + v.getKey() + "</td><td>" + v.getValue() + "</td></tr>";
+        }
+        tip+="</table></html>";
+        this.txtExec.setToolTipText(tip);
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddAlterar;
     private javax.swing.JButton btnAddCriar;
@@ -1238,7 +1452,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblBkp;
     private javax.swing.JLabel lblMensagem;
     private javax.swing.JLabel lblStatus;
@@ -1249,6 +1462,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTable tabelaCriar;
     private javax.swing.JTable tabelaDeletar;
     private javax.swing.JTable tbApp;
+    private javax.swing.JTextField txtExec;
     // End of variables declaration//GEN-END:variables
 
 }
