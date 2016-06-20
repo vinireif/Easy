@@ -8,6 +8,7 @@ import Fonts.Executar.Application;
 import Fonts.Executar.HistFrame;
 import Fonts.Executar.Variable;
 import Fonts.Update;
+import VBUtils.VBChooser;
 import VBUtils.VBMsg;
 import VBUtils.VBSystem;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
@@ -34,6 +35,8 @@ public class MainFrame extends javax.swing.JFrame {
     private DataBase db;
     private DefaultTableModel tableAppModel;
     private ConfigDomain cd;
+    private Object txtAddress;
+    private DefaultTableModel tableDomainModel;
     
     /** Creates new form MainFrame */
     public MainFrame(DataBase db) {
@@ -41,9 +44,13 @@ public class MainFrame extends javax.swing.JFrame {
         this.db = db;
         this.getContentPane().setBackground(Color.white);
         this.tableAppModel = (DefaultTableModel)this.tbApp.getModel();
+        this.tableDomainModel = (DefaultTableModel)this.tbDomain.getModel();
         new Update(this, db).start();
         this.cd = new ConfigDomain();
         this.updateToolTipExec();
+        this.txtGf.setText(db.getDirGf());
+        this.jLabel11MouseClicked(null);
+        this.txtGf.setForeground(Color.black);
     }
 
     @SuppressWarnings("unchecked")
@@ -95,6 +102,16 @@ public class MainFrame extends javax.swing.JFrame {
         btnStop = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         lbee = new javax.swing.JLabel();
+        jPanel8 = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tbDomain = new javax.swing.JTable();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        txtGf = new javax.swing.JTextField();
+        btnPesquisar1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Easy");
@@ -850,6 +867,145 @@ public class MainFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("ConfigDomain", jPanel4);
 
+        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
+
+        tbDomain.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][]
+            {
+
+            },
+            new String []
+            {
+                "Domínios"
+            }
+        )
+        {
+            boolean[] canEdit = new boolean []
+            {
+                false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex)
+            {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane5.setViewportView(tbDomain);
+
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Domain/stop.png"))); // NOI18N
+        jLabel8.setText("Parar");
+        jLabel8.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel8.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                jLabel8MouseClicked(evt);
+            }
+        });
+
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Domain/icon.png"))); // NOI18N
+        jLabel9.setText("Reiniciar");
+        jLabel9.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel9.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                jLabel9MouseClicked(evt);
+            }
+        });
+
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Domain/power-button.png"))); // NOI18N
+        jLabel10.setText("Iniciar");
+        jLabel10.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel10.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                jLabel10MouseClicked(evt);
+            }
+        });
+
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Domain/reload.png"))); // NOI18N
+        jLabel11.setText("Atualizar");
+        jLabel11.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel11.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                jLabel11MouseClicked(evt);
+            }
+        });
+
+        jLabel12.setText("Diretório GlassFish:");
+
+        btnPesquisar1.setBackground(new java.awt.Color(255, 255, 255));
+        btnPesquisar1.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        btnPesquisar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/ConfigDomain/search.png"))); // NOI18N
+        btnPesquisar1.setBorderPainted(false);
+        btnPesquisar1.setContentAreaFilled(false);
+        btnPesquisar1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnPesquisar1.setOpaque(true);
+        btnPesquisar1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                btnPesquisar1ActionPerformed(evt);
+            }
+        });
+        btnPesquisar1.addFocusListener(new java.awt.event.FocusAdapter()
+        {
+            public void focusLost(java.awt.event.FocusEvent evt)
+            {
+                btnPesquisar1FocusLost(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 827, Short.MAX_VALUE)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addGap(28, 28, 28)
+                        .addComponent(jLabel9)
+                        .addGap(31, 31, 31)
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel11))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtGf)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnPesquisar1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel9)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel11))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtGf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel12))
+                    .addComponent(btnPesquisar1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Dominios", jPanel8);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -1419,6 +1575,67 @@ public class MainFrame extends javax.swing.JFrame {
         lbee.setText(new String(Base64.decode("YnJ1bm8gdmlhZG8=")));
     }//GEN-LAST:event_lbeeMouseClicked
 
+    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jLabel8MouseClicked
+    {//GEN-HEADEREND:event_jLabel8MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel8MouseClicked
+
+    private void jLabel9MouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jLabel9MouseClicked
+    {//GEN-HEADEREND:event_jLabel9MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel9MouseClicked
+
+    private void jLabel10MouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jLabel10MouseClicked
+    {//GEN-HEADEREND:event_jLabel10MouseClicked
+        if(this.tbDomain.getSelectedRow() == -1)
+        {
+            return;
+        }
+        String domainName = this.tbDomain.getValueAt(this.tbDomain.getSelectedRow(), 0) + "";
+        System.out.println("cmd " + this.db.getDirGf() + "/../bin asadmin start-domain " + domainName);
+        try
+        {
+            VBSystem.cmdCommand("cmd " + this.db.getDirGf() + "/../bin asadmin start-domain " + domainName);
+        } 
+        catch(Exception ex)
+        {
+            VBMsg.error("Erro ao executar ação:\n" + ex);
+        }
+    }//GEN-LAST:event_jLabel10MouseClicked
+
+    private void jLabel11MouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jLabel11MouseClicked
+    {//GEN-HEADEREND:event_jLabel11MouseClicked
+        this.tableDomainModel.setRowCount(0);
+        File f = new File(this.txtGf.getText());
+        if(!f.exists())
+        {
+            this.txtGf.setForeground(Color.red);
+            return;
+        }
+        this.txtGf.setForeground(Color.black);
+        for(File file : f.listFiles())
+        {
+            this.tableDomainModel.addRow(new Object[]{file.getName()});
+        }
+        this.db.setDirGf(this.txtGf.getText());
+    }//GEN-LAST:event_jLabel11MouseClicked
+
+    private void btnPesquisar1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnPesquisar1ActionPerformed
+    {//GEN-HEADEREND:event_btnPesquisar1ActionPerformed
+        VBChooser chooser = new VBChooser();
+        chooser.setType(VBChooser.DIRECTORIES_ONLY);
+        File f = chooser.showOpenDialog();
+        if(f != null)
+        {
+            this.txtGf.setText(f.getPath());
+        }
+    }//GEN-LAST:event_btnPesquisar1ActionPerformed
+
+    private void btnPesquisar1FocusLost(java.awt.event.FocusEvent evt)//GEN-FIRST:event_btnPesquisar1FocusLost
+    {//GEN-HEADEREND:event_btnPesquisar1FocusLost
+
+    }//GEN-LAST:event_btnPesquisar1FocusLost
+
     public JTextField getTxtExec()
     {
         return txtExec;
@@ -1451,16 +1668,22 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnDelDeletar;
     private javax.swing.JButton btnDeletar;
     private javax.swing.JButton btnPesquisar;
+    private javax.swing.JButton btnPesquisar1;
     private javax.swing.JButton btnStop;
     private javax.swing.JTextField dirDomain;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -1468,10 +1691,12 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lbee;
     private javax.swing.JLabel lblBkp;
@@ -1484,7 +1709,9 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTable tabelaCriar;
     private javax.swing.JTable tabelaDeletar;
     private javax.swing.JTable tbApp;
+    private javax.swing.JTable tbDomain;
     private javax.swing.JTextField txtExec;
+    private javax.swing.JTextField txtGf;
     // End of variables declaration//GEN-END:variables
 
 }
