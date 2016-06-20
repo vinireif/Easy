@@ -170,6 +170,40 @@ public class ConfigDomain {
         p.destroy();
     }
     
+    public void startDomain(boolean message, JTextField dirDomain) throws IOException, InterruptedException{
+        
+        File asadmin = new File(dirDomain.getText() + "\\..\\..\\bin\\asadmin.bat");
+                
+        Process p = Runtime.getRuntime().exec("cmd /C " + asadmin.getAbsolutePath() + " start-domain " + nomeDomain(dirDomain));        
+                
+        BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+        BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+
+        if(stdInput.readLine() != null){
+            String s = null;
+            while ((s = stdInput.readLine()) != null) {
+                
+                if(s.contains("Command stop-domain executed successfully")){                    
+                    
+                    if(message){
+                        JOptionPane.showMessageDialog(null, s);
+                    }
+                }
+            }
+        }
+        
+        if(stdError.readLine() != null){
+            String s = null;
+            while ((s = stdError.readLine()) != null) {                
+                if(message){
+                    JOptionPane.showMessageDialog(null, s);                
+                }
+            }
+        }
+        p.destroy();
+    }
+    
     public String nomeDomain(JTextField dirDomain){
         
         String[] splitDomain = dirDomain.getText().split("\\\\");
