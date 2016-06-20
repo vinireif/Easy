@@ -10,6 +10,7 @@ import Fonts.Executar.Variable;
 import Fonts.Update;
 import VBUtils.VBMsg;
 import VBUtils.VBSystem;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.io.File;
@@ -93,6 +94,7 @@ public class MainFrame extends javax.swing.JFrame {
         lblMensagem = new javax.swing.JLabel();
         btnStop = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        lbee = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Easy");
@@ -772,6 +774,14 @@ public class MainFrame extends javax.swing.JFrame {
         jButton2.setContentAreaFilled(false);
         jButton2.setOpaque(true);
 
+        lbee.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                lbeeMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -802,8 +812,12 @@ public class MainFrame extends javax.swing.JFrame {
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                             .addComponent(btnPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                             .addComponent(lblBkp, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 163, Short.MAX_VALUE)))
+                .addContainerGap(174, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbee, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -829,7 +843,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnStop)
                     .addComponent(jButton2))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
+                .addComponent(lbee, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("ConfigDomain", jPanel4);
@@ -1398,6 +1414,11 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tbAppMouseClicked
 
+    private void lbeeMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_lbeeMouseClicked
+    {//GEN-HEADEREND:event_lbeeMouseClicked
+        lbee.setText(new String(Base64.decode("YnJ1bm8gdmlhZG8=")));
+    }//GEN-LAST:event_lbeeMouseClicked
+
     public JTextField getTxtExec()
     {
         return txtExec;
@@ -1452,6 +1473,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JLabel lbee;
     private javax.swing.JLabel lblBkp;
     private javax.swing.JLabel lblMensagem;
     private javax.swing.JLabel lblStatus;
