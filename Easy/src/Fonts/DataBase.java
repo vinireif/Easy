@@ -15,6 +15,7 @@ public class DataBase implements Serializable
     private ArrayList<Application> listApps = new ArrayList<>();
     private ArrayList<Variable> listVars= new ArrayList<>();
     private ArrayList<String> listHist = new ArrayList<>();
+    private String dirGf = "";
     
     //
     
@@ -130,4 +131,16 @@ public class DataBase implements Serializable
     {
         return this.listVars.size();
     }
+
+    public String getDirGf()
+    {
+        return dirGf;
+    }
+
+    public void setDirGf(String dirGf)
+    {
+        this.dirGf = dirGf;
+    }
+    
+    
 }
