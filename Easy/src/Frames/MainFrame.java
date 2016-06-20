@@ -1606,6 +1606,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void jLabel11MouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jLabel11MouseClicked
     {//GEN-HEADEREND:event_jLabel11MouseClicked
         this.tableDomainModel.setRowCount(0);
+        
         File f = new File(this.txtGf.getText());
         if(!f.exists())
         {
